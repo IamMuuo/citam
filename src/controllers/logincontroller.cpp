@@ -9,27 +9,31 @@ LoginController::LoginController(QObject *parent)
 bool LoginController::login(const QString &email, const QString &password)
 {
     QEventLoop loop;
-    bool ok = false;
 
-    connect(&userService, &UserService::success, &loop, &QEventLoop::quit);
-    connect(&userService, &UserService::serviceError, &loop, &QEventLoop::quit);
-    connect(&userService, &UserService::serviceError, [this, &ok]() {
-        ok = false;
-        this->setError(userService.error());
+    connect(&mUserService, &UserService::success, &loop, &QEventLoop::quit);
+    connect(&mUserService, &UserService::serviceError, &loop, &QEventLoop::quit);
+    connect(&mUserService, &UserService::serviceError, [this]() {
+        this->setError(mUserService.error());
     });
 
-    connect(&userService, &UserService::success, [this, &ok]() {
-        ok = true;
-        this->currentUser = userService.currentUser;
+    connect(&mUserService, &UserService::success, [this]() {
+        this->mCurrentUser = mUserService.currentUser;
+        mIsAuthenticated = true;
+        Q_EMIT loginStateChanged();
     });
 
-    userService.authenticate(email, password);
+    mUserService.authenticate(email, password);
     loop.exec();
 
-    return ok;
+    return mIsAuthenticated;
 }
 
 QString LoginController::error() const
 {
     return mError;
+}
+
+bool LoginController::authenticated() const
+{
+    return mIsAuthenticated;
 }

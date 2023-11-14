@@ -47,7 +47,7 @@ User UserService::authenticate(const QString &email, const QString &passord)
             break;
 
         default:
-            setError(reply->errorString());
+            setError(QString::fromLatin1(response.toStdString().c_str()));
             break;
         }
     });

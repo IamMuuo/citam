@@ -12,7 +12,8 @@ Service::Service(QObject *parent)
     this->url->setScheme(PROTOCOL);
     this->url->setHost(HOST);
     this->url->setPort(PORT);
-    this->request->setHeader(request->ContentTypeHeader, QVariant(QString::fromLatin1("application/json")));
+    this->request->setHeader(QNetworkRequest::KnownHeaders::ContentTypeHeader, QString::fromLatin1("application/json"));
+
     //    this->request->setRawHeader("Content-Type", "application/json");
 }
 

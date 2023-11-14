@@ -8,13 +8,16 @@ class LoginController : public Controller
 
 {
     Q_OBJECT
-    UserService userService;
-    User currentUser;
+    UserService mUserService;
+    User mCurrentUser;
+    bool mIsAuthenticated;
 
 public:
     explicit LoginController(QObject *parent = nullptr);
     Q_INVOKABLE bool login(const QString &email, const QString &password);
     Q_INVOKABLE QString error() const override;
+    Q_INVOKABLE bool authenticated() const;
+    Q_SIGNAL void loginStateChanged();
 };
 
 #endif // LOGINCONTROLLER_H

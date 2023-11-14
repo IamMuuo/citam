@@ -4,5 +4,7 @@
         <file alias="About.qml">contents/ui/About.qml</file>
         <file alias="Login.qml">contents/ui/Login.qml</file>
         <file alias="Home.qml">contents/ui/Home.qml</file>
+        <!-- Images -->
+        <file alias="teacher.png">contents/ui/img/teacher.png</file>
     </qresource>
 </RCC>

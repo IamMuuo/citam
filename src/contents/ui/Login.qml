@@ -24,7 +24,7 @@ Kirigami.Page {
         Kirigami.FormLayout {
             anchors.centerIn: parent
 
-            Kirigami.Separator{
+            Kirigami.Separator {
                 Kirigami.FormData.label: i18n("Login To Citam")
                 Kirigami.FormData.isSection: true
             }
@@ -56,37 +56,46 @@ Kirigami.Page {
         }
     }
 
-    Connections{
+    Connections {
         target: LoginController
-        onNewError:{
+        onNewError: {
             message.text = LoginController.error()
             message.type = Kirigami.MessageType.Error
-            message.visible= true
+            message.visible = true
+        }
+
+        onLoginStateChanged: {
+            message.text = "Welcome to CITAM"
+            message.type = Kirigami.MessageType.Positive
+            message.visible = true
+
+            var ok = LoginController.authenticated()
+            if (ok) {
+                pageStack.pop()
+                pageStack.push(Qt.resolvedUrl("Home.qml"))
+            }
         }
     }
-
-
 
     // Verification
     function verifyLoginInput() {
         if (usernameInput.text == "" || passwordInput.text == "") {
-            message.text = "Please ensure you fill your username and password and try that again";
-            message.type = Kirigami.MessageType.Warning;
-            message.visible = true;
-            return false;
+            message.text = "Please ensure you fill your username and password and try that again"
+            message.type = Kirigami.MessageType.Warning
+            message.visible = true
+            return false
         }
-        return true;
+        return true
     }
 
-
     // Login feature
-    function login(){
+    function login() {
         loginButton.visible = false
-        loadingIndicator.visible = true;
-        if(verifyLoginInput()){
-            var ok = LoginController.login(usernameInput.text, passwordInput.text);
+        loadingIndicator.visible = true
+        if (verifyLoginInput()) {
+            LoginController.login(usernameInput.text, passwordInput.text)
         }
-        loadingIndicator.visible = false;
+        loadingIndicator.visible = false
         loginButton.visible = true
     }
 }

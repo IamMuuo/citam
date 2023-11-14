@@ -27,10 +27,10 @@ QByteArray User::toJson() const
     // Marshal the userType
     //    if (m_userTypeInfo)
     //        userObject["user_type_info"] = QJsonDocument::fromJson(m_userTypeInfo->toJson()).object();
-
-    userObject[QString::fromLatin1("last_login")] = m_lastLogin;
-    userObject[QString::fromLatin1("created_at")] = m_createdAt;
-    userObject[QString::fromLatin1("updated_at")] = m_updatedAt;
+    userObject[QString::fromLatin1("user_type_info")] = 0;
+    //    userObject[QString::fromLatin1("last_login")] = m_lastLogin.isEmpty() ? QDateTime::currentDateTime().toString(Qt::ISODateWithMs) : m_lastLogin;
+    //    userObject[QString::fromLatin1("created_at")] = m_createdAt.isEmpty() ? QDateTime::currentDateTime().toString(Qt::ISODateWithMs) : m_createdAt;
+    //    userObject[QString::fromLatin1("updated_at")] = m_updatedAt.isEmpty() ? QDateTime::currentDateTime().toString(Qt::ISODateWithMs) : m_updatedAt;
 
     return QJsonDocument::fromVariant(userObject).toJson();
 }
@@ -51,7 +51,7 @@ User User::fromJson(const QByteArray *json)
     user.m_id = userObject[QString::fromLatin1("id")].toInt();
     user.m_firstName = userObject[QString::fromLatin1("first_name")].toString();
     user.m_lastName = userObject[QString::fromLatin1("last_name")].toString();
-    user.m_email = userObject[QString::fromLatin1("email")].toString();
+    user.m_email = userObject[QString::fromLatin1("username")].toString();
     user.m_password = userObject[QString::fromLatin1("password")].toString();
     user.m_active = userObject[QString::fromLatin1("active")].toBool();
     user.m_phone = userObject[QString::fromLatin1("phone")].toString();
