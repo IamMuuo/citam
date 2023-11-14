@@ -5,6 +5,15 @@ cmake_minimum_required(VERSION 3.16)
 
 project(citam VERSION 0.1)
 
+list(APPEND QML_IMPORT_PATH "/lib64/qt/qml")
+list(REMOVE_DUPLICATES QML_IMPORT_PATH)
+set(QML_IMPORT_PATH ${QML_IMPORT_PATH}
+    CACHE STRING "Qt Creator 4.1 extra qml import paths"
+    FORCE
+)
+
+
+
 include(FeatureSummary)
 
 set(QT5_MIN_VERSION 5.15)
@@ -13,7 +22,6 @@ set(KF5_MIN_VERSION 5.100)
 find_package(ECM ${KF5_MIN_VERSION} REQUIRED NO_MODULE)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${ECM_MODULE_PATH})
-list(APPEND QML_IMPORT_PATH "/lib64/qt/qml")
 
 include(FeatureSummary)
 include(KDEInstallDirs)

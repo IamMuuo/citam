@@ -4,7 +4,13 @@
 add_executable(citam
     main.cpp
     app.cpp
-    resources.qrc)
+    resources.qrc
+    controller.h controller.cpp
+    controllers/logincontroller.h controllers/logincontroller.cpp
+    models/user.h models/user.cpp
+    services/service.h services/service.cpp
+    constants/constants.h
+    services/userservice.h services/userservice.cpp)
 
 target_link_libraries(citam
     Qt5::Core

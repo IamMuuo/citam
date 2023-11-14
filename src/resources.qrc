@@ -1,10 +1,8 @@
-<!--
-    SPDX-License-Identifier: CC0-1.0
-    SPDX-FileCopyrightText: 2023 Erick Muuo <hearteric57@gmail.com>
--->
 <RCC>
     <qresource prefix="/">
         <file alias="main.qml">contents/ui/main.qml</file>
         <file alias="About.qml">contents/ui/About.qml</file>
+        <file alias="Login.qml">contents/ui/Login.qml</file>
+        <file alias="Home.qml">contents/ui/Home.qml</file>
     </qresource>
 </RCC>

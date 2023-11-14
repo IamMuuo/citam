@@ -18,6 +18,8 @@
 #include <KLocalizedContext>
 #include <KLocalizedString>
 
+#include "controllers/logincontroller.h"
+
 #include "citamconfig.h"
 
 #ifdef Q_OS_ANDROID
@@ -87,6 +89,9 @@ int main(int argc, char *argv[])
 
     App application;
     qmlRegisterSingletonInstance("org.kde.citam", 1, 0, "App", &application);
+
+    LoginController loginController;
+    qmlRegisterSingletonInstance<LoginController>("org.kde.citam", 1, 0, "LoginController", &loginController);
 
     engine.rootContext()->setContextObject(new KLocalizedContext(&engine));
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
