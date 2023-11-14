@@ -13,6 +13,7 @@ set(KF5_MIN_VERSION 5.100)
 find_package(ECM ${KF5_MIN_VERSION} REQUIRED NO_MODULE)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${ECM_MODULE_PATH})
+list(APPEND QML_IMPORT_PATH "/lib64/qt/qml")
 
 include(FeatureSummary)
 include(KDEInstallDirs)
