@@ -61,7 +61,7 @@ bool LoginController::registerUser(const QVariantMap &payload)
     User u;
     auto content = QJsonDocument::fromVariant(payload).toJson();
 
-    u.fromJson(&content);
+    u = u.fromJson(&content);
 
     mUserService.registerUser(u.toJson());
     loop.exec();

@@ -10,7 +10,7 @@ Kirigami.OverlaySheet {
 
     // Properties
     property string mode: "create"
-    property string user: "teacher"
+    property int user: 3
 
     header: Kirigami.Heading {
         text: mode == "create" ? i18nc("@title:window",
@@ -24,6 +24,11 @@ Kirigami.OverlaySheet {
             onUserModified: {
                 message.text = "User was added successfully"
                 message.type = Kirigami.MessageType.Positive
+                message.visible = true
+            }
+            onNewError: {
+                message.text = LoginController.error()
+                message.type = Kirigami.MessageType.Error
                 message.visible = true
             }
         }
@@ -209,9 +214,10 @@ Kirigami.OverlaySheet {
                 "last_name": lastNameField.text.trim(),
                 "email": emailField.text.trim(),
                 "phone": phoneField.text.trim(),
-                "password": passwordField.text.trim()
-            };
-            LoginController.registerUser(payload);
+                "password": passwordField.text.trim(),
+                "user_type": user
+            }
+            LoginController.registerUser(payload)
         }
     }
 
@@ -239,5 +245,6 @@ Kirigami.OverlaySheet {
             message.visible = true
             return false
         }
+        return true
     }
 }
