@@ -13,6 +13,8 @@ public:
     explicit UserService(QObject *parent = nullptr);
 
     User authenticate(const QString &email, const QString &passord);
+    int getNumberOfAllUsers();
+    void registerUser(const QByteArray &user);
     Q_SIGNAL void success();
 };
 

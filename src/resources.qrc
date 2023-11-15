@@ -4,7 +4,14 @@
         <file alias="About.qml">contents/ui/About.qml</file>
         <file alias="Login.qml">contents/ui/Login.qml</file>
         <file alias="Home.qml">contents/ui/Home.qml</file>
-        <!-- Images -->
+        <file alias="AddUserForm.qml">contents/ui/AddUserForm.qml</file>
+
+        <!--Images-->
         <file alias="teacher.png">contents/ui/img/teacher.png</file>
+        <file alias="class.png">contents/ui/img/class.png</file>
+        <file alias="pupils.png">contents/ui/img/pupils.png</file>
+        <file alias="residence.png">contents/ui/img/residence.png</file>
+        <file alias="trips.png">contents/ui/img/trips.png</file>
+
     </qresource>
 </RCC>

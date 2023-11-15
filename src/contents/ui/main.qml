@@ -10,5 +10,5 @@ import org.kde.citam 1.0
 Kirigami.ApplicationWindow {
     id: root
     title: i18nc("@title:window", "CITAM")
-    pageStack.initialPage:  Qt.resolvedUrl("Login.qml")
+    pageStack.initialPage:  Qt.resolvedUrl("Home.qml")
 }

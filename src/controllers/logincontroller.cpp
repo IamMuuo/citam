@@ -1,6 +1,7 @@
 #include "logincontroller.h"
 
 #include <QEventLoop>
+#include <QJsonDocument>
 LoginController::LoginController(QObject *parent)
     : Controller{parent}
 {
@@ -36,4 +37,34 @@ QString LoginController::error() const
 bool LoginController::authenticated() const
 {
     return mIsAuthenticated;
+}
+
+QVariantMap LoginController::getUser() const
+{
+    return mCurrentUser.toMap();
+}
+
+bool LoginController::registerUser(const QVariantMap &payload)
+{
+    QEventLoop loop;
+
+    connect(&mUserService, &UserService::success, &loop, &QEventLoop::quit);
+    connect(&mUserService, &UserService::serviceError, &loop, &QEventLoop::quit);
+    connect(&mUserService, &UserService::serviceError, [this]() {
+        this->setError(mUserService.error());
+    });
+
+    connect(&mUserService, &UserService::success, [this]() {
+        Q_EMIT userModified();
+    });
+
+    User u;
+    auto content = QJsonDocument::fromVariant(payload).toJson();
+
+    u.fromJson(&content);
+
+    mUserService.registerUser(u.toJson());
+    loop.exec();
+
+    return true;
 }

@@ -15,69 +15,134 @@ Kirigami.ScrollablePage {
         }
     }
 
-    Kirigami.GlobalDrawer {
-        id: globalDrawer
-        title: "CITAM"
-        titleIcon: "gnome-logo-icon"
-        bannerVisible: true
-        spacing: 8
-        actions: [
-            Kirigami.Action {
-                text: i18nc("@action:button", "Home")
-                icon.name: "go-home"
-            },
-            Kirigami.Action {
-                text: i18nc("@action:button", "Manage Teachers")
-                icon.name: "resource-calendar-insert"
-            },
-
-            Kirigami.Action {
-                text: i18nc("@action:button", "Manage Students")
-                icon.name: "user"
-            },
-
-            Kirigami.Action {
-                text: i18nc("@action:button", "Manage Classes")
-                icon.name: "application-x-java"
-            },
-            Kirigami.Action {
-                text: i18nc("@action:button", "Settings")
-                icon.name: "gnome-settings"
-            },
-
-            Kirigami.Action {
-                text: i18nc("@action:button", "Quit")
-                icon.name: "window-close"
-                shortcut: StandardKey.Quit
-                onTriggered: {
-                    Qt.quit()
-                }
-            }
-        ]
+    // Overlay sheets
+    AddUserForm{
+        id: addUserForm
     }
+
 
     header: Controls.ToolBar {
         Kirigami.Heading {
             anchors.centerIn: parent
-            text: "Hi Erick "
+            text: "Hello,  " + LoginController.getUser()["first_name"]
         }
     }
 
-    Kirigami.Card{
-        anchors.centerIn: parent
-        Layout.fillWidth: false
-        contentItem: Kirigami.Label{
-            wrapMode: Text.WordWrap
-            text:" Hi there"
+    // Dashboard Quick Cards
+    ListModel {
+        id: dashCards
+
+        ListElement {
+            title: "Manage Students"
+            img: "pupils.png"
+            description: "Easily manage student's information"
+            todo: function(){
+                addUserForm.open()
+            }
+
         }
-        banner{
-           source: "teacher.png"
-           title: "Manage Teachers"
-           height: 100
-           width: 100
+
+        ListElement {
+            title: "Manage Teachers"
+            img: "teacher.png"
+            description: "Easily manage teacher information"
+            todo: function(){}
+
         }
-        height: 300
-        width: 300
+
+        ListElement {
+            title: "Manage Classes"
+            img: "class.png"
+            description: "Easily manage class related information"
+            todo: function(){}
+
+        }
+
+        ListElement {
+            title: "Manage Trips"
+            img: "trips.png"
+            description: "Easily manage home trips"
+            todo: function(){}
+        }
     }
 
+    ListModel{
+        id: quickCards
+
+        ListElement{
+            title: "Number of Students"
+            quantity: 20
+
+        }
+
+        ListElement{
+            title: "Number of Teachers"
+            quantity: 30
+        }
+
+        ListElement{
+            title: "Number of Parents"
+            quantity: 10
+        }
+
+
+    }
+
+    ColumnLayout {
+//            Layout.alignment: Qt.AlignHCenter
+        RowLayout{
+            Layout.fillWidth: false
+            Layout.alignment: Qt.AlignHCenter
+            Repeater{
+                model: quickCards
+                Kirigami.AbstractCard{
+                    header: Kirigami.Heading{
+                        text: i18n(quantity)
+                        horizontalAlignment: Text.AlignHCenter
+                        level: 1
+                    }
+                    contentItem: Kirigami.Label{
+                        text: i18n(title)
+                    }
+                }
+
+            }
+        }
+
+        Kirigami.CardsLayout {
+            visible: !root.pageStack.wideMode
+            Layout.topMargin: Kirigami.Units.largeSpacing
+            Layout.leftMargin: Kirigami.Units.gridUnit
+            Layout.rightMargin: Kirigami.Units.gridUnit
+            rows: 3
+
+            Repeater {
+                model: dashCards
+                delegate: Kirigami.Card {
+                    banner {
+                        source: Qt.resolvedUrl(img)
+
+
+                        title: title
+                        titleAlignment: Qt.AlignBottom | Qt.AlignLeft
+                        width: 200
+                        height: 200
+                        fillMode: Image.PreserveAspectCrop
+                    }
+                    width: 200
+                    height: 200
+
+                    contentItem: Kirigami.Label {
+                        text: i18n(description)
+                    }
+
+                    implicitWidth: Kirigami.Units.gridUnit * 30
+                    Layout.maximumWidth: Kirigami.Units.gridUnit * 30
+                    activeFocusOnTab: true
+                    showClickFeedback: true
+                    onClicked:  todo()
+                }
+            }
+        }
+    }
 }

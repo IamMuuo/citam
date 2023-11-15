@@ -27,7 +27,7 @@ QByteArray User::toJson() const
     // Marshal the userType
     //    if (m_userTypeInfo)
     //        userObject["user_type_info"] = QJsonDocument::fromJson(m_userTypeInfo->toJson()).object();
-    userObject[QString::fromLatin1("user_type_info")] = 0;
+    userObject[QString::fromLatin1("user_type_info")] = {};
     //    userObject[QString::fromLatin1("last_login")] = m_lastLogin.isEmpty() ? QDateTime::currentDateTime().toString(Qt::ISODateWithMs) : m_lastLogin;
     //    userObject[QString::fromLatin1("created_at")] = m_createdAt.isEmpty() ? QDateTime::currentDateTime().toString(Qt::ISODateWithMs) : m_createdAt;
     //    userObject[QString::fromLatin1("updated_at")] = m_updatedAt.isEmpty() ? QDateTime::currentDateTime().toString(Qt::ISODateWithMs) : m_updatedAt;
