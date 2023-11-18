@@ -10,7 +10,9 @@ add_executable(citam
     models/user.h models/user.cpp
     services/service.h services/service.cpp
     constants/constants.h
-    services/userservice.h services/userservice.cpp)
+    services/userservice.h services/userservice.cpp
+    controllers/classcontroller.h controllers/classcontroller.cpp
+    services/classservice.h services/classservice.cpp)
 
 target_link_libraries(citam
     Qt5::Core

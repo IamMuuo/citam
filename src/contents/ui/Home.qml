@@ -5,6 +5,12 @@ import org.kde.kirigami 2.19 as Kirigami
 import org.kde.citam 1.0
 
 Kirigami.ScrollablePage {
+    // init
+    onVisualFocusChanged:  function(){
+        console.log("focus")
+//        stats = LoginController.getAllUsers()
+    }
+
     id: root
     title: i18nc("@title:window", "CITAM Management System")
     footer: RowLayout {
@@ -20,6 +26,9 @@ Kirigami.ScrollablePage {
         id: addUserForm
     }
 
+    AddStudentForm{
+        id: addStudentForm
+    }
 
     header: Controls.ToolBar {
         Kirigami.Heading {
@@ -37,7 +46,7 @@ Kirigami.ScrollablePage {
             img: "pupils.png"
             description: "Easily manage student's information"
             todo: function(){
-                addUserForm.open()
+                addStudentForm.open()
             }
 
         }
@@ -46,7 +55,9 @@ Kirigami.ScrollablePage {
             title: "Manage Teachers"
             img: "teacher.png"
             description: "Easily manage teacher information"
-            todo: function(){}
+            todo: function(){
+                addUserForm.open()
+            }
 
         }
 
@@ -54,7 +65,10 @@ Kirigami.ScrollablePage {
             title: "Manage Classes"
             img: "class.png"
             description: "Easily manage class related information"
-            todo: function(){}
+            todo: function(){
+                pageStack.pop();
+                pageStack.push(Qt.resolvedUrl("ClassManagementPage.qml"))
+            }
 
         }
 
@@ -70,8 +84,14 @@ Kirigami.ScrollablePage {
         id: quickCards
 
         ListElement{
+            title: "Number of All Users"
+            quantity: 40
+
+        }
+
+        ListElement{
             title: "Number of Students"
-            quantity: 20
+            quantity: 30
 
         }
 

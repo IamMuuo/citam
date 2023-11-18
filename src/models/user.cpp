@@ -51,7 +51,7 @@ User User::fromJson(const QByteArray *json)
     user.m_id = userObject[QString::fromLatin1("id")].toInt();
     user.m_firstName = userObject[QString::fromLatin1("first_name")].toString();
     user.m_lastName = userObject[QString::fromLatin1("last_name")].toString();
-    user.m_email = userObject[QString::fromLatin1("username")].toString();
+    user.m_email = userObject[QString::fromLatin1("email")].toString();
     user.m_password = userObject[QString::fromLatin1("password")].toString();
     user.m_active = userObject[QString::fromLatin1("active")].toBool();
     user.m_phone = userObject[QString::fromLatin1("phone")].toString();

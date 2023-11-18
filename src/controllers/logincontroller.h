@@ -19,6 +19,7 @@ public:
     Q_INVOKABLE bool authenticated() const;
     Q_INVOKABLE QVariantMap getUser() const;
     Q_INVOKABLE bool registerUser(const QVariantMap &payload);
+    Q_INVOKABLE QVariantMap getAllUsers();
 
     // Signals
     Q_SIGNAL void loginStateChanged();

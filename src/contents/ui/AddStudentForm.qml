@@ -10,12 +10,11 @@ Kirigami.OverlaySheet {
 
     // Properties
     property string mode: "create"
-    property int user:2
 
     header: Kirigami.Heading {
         text: mode == "create" ? i18nc("@title:window",
-                                       "Add New " + user) : i18nc(
-                                     "@title:window", "Update " + user)
+                                       "Add New student") : i18nc(
+                                     "@title:window", "Update student Record")
     }
     // Form
     Kirigami.FormLayout {
@@ -45,10 +44,6 @@ Kirigami.OverlaySheet {
                 text: ""
                 type: Kirigami.MessageType.Information
                 showCloseButton: true
-            }
-
-            Kirigami.Avatar {
-                iconSource: "im-user"
             }
 
             Kirigami.Heading {
@@ -90,7 +85,7 @@ Kirigami.OverlaySheet {
             }
 
             Kirigami.Heading {
-                text: i18n("Contact Information")
+                text: i18n("Other Information")
                 level: 1
             }
 
@@ -103,7 +98,7 @@ Kirigami.OverlaySheet {
                 Layout.fillWidth: true
 
                 Controls.TextField {
-                    id: emailField
+                    id: ageField
                     // Provides label attached to the textfield
                     Kirigami.FormData.label: i18nc("@label:textbox", "Email:")
                     // Placeholder text is visible before you enter anything

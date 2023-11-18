@@ -1,7 +1,10 @@
 #include "logincontroller.h"
 
 #include <QEventLoop>
+#include <QJsonArray>
 #include <QJsonDocument>
+#include <QJsonObject>
+#include <algorithm>
 LoginController::LoginController(QObject *parent)
     : Controller{parent}
 {
@@ -67,4 +70,32 @@ bool LoginController::registerUser(const QVariantMap &payload)
     loop.exec();
 
     return true;
+}
+
+QVariantMap LoginController::getAllUsers()
+{
+    QVariantMap stats;
+    QEventLoop loop;
+
+    connect(&mUserService, &UserService::success, &loop, &QEventLoop::quit);
+    connect(&mUserService, &UserService::serviceError, &loop, &QEventLoop::quit);
+    connect(&mUserService, &UserService::serviceError, [this]() {
+        this->setError(mUserService.error());
+    });
+
+    connect(&mUserService, &UserService::success, [this]() {
+
+    });
+
+    QByteArray content = mUserService.getAllUsers();
+    loop.exec();
+
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(content);
+    QJsonArray arr = jsonDoc.array();
+
+    for (const QJsonValue &value : arr) {
+        auto obj = value.toObject();
+        //        stats[obj[QString::fromLatin1("user_type_info")][QString::fromLatin1("user_type")]] += 1;
+    }
+    return stats;
 }

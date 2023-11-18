@@ -18,6 +18,7 @@
 #include <KLocalizedContext>
 #include <KLocalizedString>
 
+#include "controllers/classcontroller.h"
 #include "controllers/logincontroller.h"
 
 #include "citamconfig.h"
@@ -92,6 +93,9 @@ int main(int argc, char *argv[])
 
     LoginController loginController;
     qmlRegisterSingletonInstance<LoginController>("org.kde.citam", 1, 0, "LoginController", &loginController);
+
+    ClassController classController;
+    qmlRegisterSingletonInstance<ClassController>("org.kde.citam", 1, 0, "ClassController", &classController);
 
     engine.rootContext()->setContextObject(new KLocalizedContext(&engine));
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
