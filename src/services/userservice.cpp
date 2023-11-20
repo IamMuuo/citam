@@ -1,6 +1,8 @@
 #include "userservice.h"
 #include <QDebug>
+#include <QJsonArray>
 #include <QJsonDocument>
+#include <QJsonObject>
 
 UserService::UserService(QObject *parent)
     : Service{parent}
@@ -58,18 +60,31 @@ User UserService::authenticate(const QString &email, const QString &passord)
     return currentUser;
 }
 
-QByteArray UserService::getAllUsers()
+QVariantList UserService::getAllUsers()
 {
     this->url->setPath(QString::fromLatin1("/users/all"));
     this->request->setUrl(*url);
-    auto reply = this->netManager->post(*request, *payload);
+    qDebug() << this->url->toString();
+    auto reply = this->netManager->get(*request);
 
     connect(reply, &QNetworkReply::finished, [this, reply]() {
         auto response = reply->readAll();
 
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
         switch (reply->error()) {
         case QNetworkReply::NoError:
-            currentUser = currentUser.fromJson(&response);
+            mUsers.clear();
+            if (jsonDoc.isArray()) {
+                QJsonArray jsArr = jsonDoc.array();
+                for (auto obj : jsArr) {
+                    mUsers.append(obj.toVariant().toMap());
+                }
+                Q_EMIT success();
+            } else {
+                setError(QString::fromLatin1("Could not parse classes information"));
+                Q_EMIT serviceError();
+            }
+
             Q_EMIT success();
             break;
 
@@ -96,7 +111,7 @@ QByteArray UserService::getAllUsers()
         }
     });
 
-    return reply->readAll();
+    return mUsers;
 }
 
 void UserService::registerUser(const QByteArray &user)

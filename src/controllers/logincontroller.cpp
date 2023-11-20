@@ -72,9 +72,9 @@ bool LoginController::registerUser(const QVariantMap &payload)
     return true;
 }
 
-QVariantMap LoginController::getAllUsers()
+void LoginController::fetchAllUsers()
 {
-    QVariantMap stats;
+    users.clear();
     QEventLoop loop;
 
     connect(&mUserService, &UserService::success, &loop, &QEventLoop::quit);
@@ -83,19 +83,14 @@ QVariantMap LoginController::getAllUsers()
         this->setError(mUserService.error());
     });
 
-    connect(&mUserService, &UserService::success, [this]() {
-
-    });
-
-    QByteArray content = mUserService.getAllUsers();
-    loop.exec();
-
-    QJsonDocument jsonDoc = QJsonDocument::fromJson(content);
-    QJsonArray arr = jsonDoc.array();
-
-    for (const QJsonValue &value : arr) {
-        auto obj = value.toObject();
-        //        stats[obj[QString::fromLatin1("user_type_info")][QString::fromLatin1("user_type")]] += 1;
+    for (const auto &x : mUserService.getAllUsers()) {
+        users.append(QVariant::fromValue(x));
     }
-    return stats;
+
+    loop.exec();
+}
+
+QVariantList LoginController::getAllUsers() const
+{
+    return users;
 }

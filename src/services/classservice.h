@@ -14,6 +14,8 @@ class ClassService : public Service
 public:
     explicit ClassService(QObject *parent = nullptr);
     QVariantList getAllClasses();
+    void updateClass(const QVariantMap &cls);
+    void registerClass(const QVariantMap &cls);
     Q_SIGNAL void success();
 };
 

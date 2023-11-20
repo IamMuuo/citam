@@ -11,6 +11,7 @@ class LoginController : public Controller
     UserService mUserService;
     User mCurrentUser;
     bool mIsAuthenticated;
+    QVariantList users;
 
 public:
     explicit LoginController(QObject *parent = nullptr);
@@ -19,7 +20,8 @@ public:
     Q_INVOKABLE bool authenticated() const;
     Q_INVOKABLE QVariantMap getUser() const;
     Q_INVOKABLE bool registerUser(const QVariantMap &payload);
-    Q_INVOKABLE QVariantMap getAllUsers();
+    Q_INVOKABLE void fetchAllUsers();
+    Q_INVOKABLE QVariantList getAllUsers() const;
 
     // Signals
     Q_SIGNAL void loginStateChanged();

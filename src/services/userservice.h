@@ -8,12 +8,14 @@ class UserService : public Service
 {
     Q_OBJECT
 
+    QVariantList mUsers;
+
 public:
     User currentUser;
     explicit UserService(QObject *parent = nullptr);
 
     User authenticate(const QString &email, const QString &passord);
-    QByteArray getAllUsers();
+    QVariantList getAllUsers();
     void registerUser(const QByteArray &user);
     Q_SIGNAL void success();
 };

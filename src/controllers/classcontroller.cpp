@@ -42,3 +42,33 @@ QString ClassController::error() const
 {
     return mError;
 }
+
+void ClassController::updateClass(const QVariantMap &cls)
+{
+    QEventLoop loop;
+
+    connect(&mService, &ClassService::success, &loop, &QEventLoop::quit);
+    connect(&mService, &ClassService::serviceError, &loop, &QEventLoop::quit);
+    connect(&mService, &ClassService::serviceError, [this]() {
+        this->setError(mService.error());
+    });
+
+    mService.updateClass(cls);
+
+    loop.exec();
+}
+
+void ClassController::registerClass(const QVariantMap &cls)
+{
+    QEventLoop loop;
+
+    connect(&mService, &ClassService::success, &loop, &QEventLoop::quit);
+    connect(&mService, &ClassService::serviceError, &loop, &QEventLoop::quit);
+    connect(&mService, &ClassService::serviceError, [this]() {
+        this->setError(mService.error());
+    });
+
+    mService.registerClass(cls);
+
+    loop.exec();
+}
