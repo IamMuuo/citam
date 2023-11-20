@@ -20,8 +20,10 @@ public:
     Q_INVOKABLE void fetchClassInformation();
     Q_INVOKABLE QVariantList classes() const;
     Q_INVOKABLE QString error() const override;
+    Q_INVOKABLE QString successMsg() const override;
     Q_INVOKABLE void updateClass(const QVariantMap &cls);
     Q_INVOKABLE void registerClass(const QVariantMap &cls);
+    Q_INVOKABLE void deleteClass(const QVariantMap &cls);
     Q_SIGNAL void success();
     Q_SIGNAL void classesRecieved();
 };

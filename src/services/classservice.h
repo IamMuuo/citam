@@ -16,6 +16,7 @@ public:
     QVariantList getAllClasses();
     void updateClass(const QVariantMap &cls);
     void registerClass(const QVariantMap &cls);
+    void deleteClass(const QVariantMap &cls);
     Q_SIGNAL void success();
 };
 

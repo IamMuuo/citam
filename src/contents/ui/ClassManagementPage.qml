@@ -11,12 +11,12 @@ Kirigami.ScrollablePage {
     title: i18n("Manage Classes")
 
     Component.onCompleted: {
-        LoginController.fetchAllUsers();
+        LoginController.fetchAllUsers()
         ClassController.fetchClassInformation()
         refreshPage()
     }
 
-    ClassEditForm{
+    ClassEditForm {
         id: editForm
     }
 
@@ -28,7 +28,6 @@ Kirigami.ScrollablePage {
         visible: false
         z: 1
     }
-
 
     header: Controls.ToolBar {
         RowLayout {
@@ -61,18 +60,21 @@ Kirigami.ScrollablePage {
 
     Connections {
         target: ClassController
-        onClassesRecieved: function () {
+        onClassesRecieved: function () {}
+        onSuccess: function () {
+            message.text = LoginController.successMsg()
+            message.type = Kirigami.MessageType.Positive
+            message.visible = true
         }
     }
-     Connections {
+    Connections {
         target: LoginController
         onNewError: function () {
-            message.text = LoginController.error();
+            message.text = LoginController.error()
             message.type = Kirigami.MessageType.Error
             message.visible = true
         }
     }
-
 
     ListModel {
         id: model
@@ -103,11 +105,16 @@ Kirigami.ScrollablePage {
                         Kirigami.Action {
                             text: i18n("Delete Class")
                             icon.name: "edit-delete"
+                            onTriggered: function () {
+                                ClassController.deleteClass({
+                                                                "id": id
+                                                            })
+                            }
                         }
                     ]
                     contentItem: Kirigami.Label {
                         width: parent.width
-                        text: `Grade ${grade} ${stream} ${id} has ${no_of_children} children  and a limit of ${limit}, The current class teacher is ${class_teacher_name}`
+                        text: `Grade ${grade} ${stream} has ${no_of_children} children  and a limit of ${limit}, The current class teacher is ${class_teacher_name}`
                         wrapMode: Text.WordWrap
                     }
                 }
@@ -119,13 +126,14 @@ Kirigami.ScrollablePage {
         // call the api
         model.clear()
         ClassController.fetchClassInformation()
-        LoginController.fetchAllUsers();
-        var teachers = LoginController.getAllUsers();
+        LoginController.fetchAllUsers()
+        var teachers = LoginController.getAllUsers()
 
-
-        for(var teacher in teachers){
+        for (var teacher in teachers) {
             console.log(teachers[teacher].first_name)
-            editForm.teachers.append({"text":`${teachers[teacher].id} ${teachers[teacher].first_name} ${teachers[teacher].last_name}`});
+            editForm.teachers.append({
+                                         "text": `${teachers[teacher].id} ${teachers[teacher].first_name} ${teachers[teacher].last_name}`
+                                     })
         }
 
         // Refresh the ui

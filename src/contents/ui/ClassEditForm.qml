@@ -60,12 +60,12 @@ Kirigami.OverlaySheet {
                 id: streamInput
                 Kirigami.FormData.label: "Stream"
                 model: ["Red", "Green", "Blue", "Yellow"]
-                displayText: i18n("Choose")
+                displayText: i18n(currentText)
                 width: parent.width
 
                 onCurrentIndexChanged: {
-                    currentValue = streamInput.model.get(streamInput.currentIndex)
-                    currentText = currentValue
+                    currentValue = model[currentIndex]
+                    currentText = currentValue.text
                     details.stream = currentText
                 }
                 editText: details.stream
@@ -96,7 +96,7 @@ Kirigami.OverlaySheet {
                         text: "Coconut"
                     }
                 }
-                displayText: i18n("Choose")
+                displayText: i18n(currentText)
                 width: parent.width
                 editable: false
                 onCurrentIndexChanged: {
@@ -190,8 +190,10 @@ Kirigami.OverlaySheet {
                 "id": details.id,
                 "grade": gradeInput.text,
                 "stream": streamInput.currentText,
-                "limit": Number(limitInput.text)
+                "limit": Number(limitInput.text),
+                "class_teacher_id": parseInt(teacher.currentText)
             }
+            console.log(classInfo);
 
             ClassController.registerClass(classInfo)
         }

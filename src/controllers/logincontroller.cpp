@@ -37,6 +37,11 @@ QString LoginController::error() const
     return mError;
 }
 
+QString LoginController::successMsg() const
+{
+    return mSuccessMsg;
+}
+
 bool LoginController::authenticated() const
 {
     return mIsAuthenticated;
@@ -58,6 +63,7 @@ bool LoginController::registerUser(const QVariantMap &payload)
     });
 
     connect(&mUserService, &UserService::success, [this]() {
+        this->setSuccess(QString::fromLatin1("User created successfully"));
         Q_EMIT userModified();
     });
 

@@ -17,6 +17,7 @@ public:
     explicit LoginController(QObject *parent = nullptr);
     Q_INVOKABLE bool login(const QString &email, const QString &password);
     Q_INVOKABLE QString error() const override;
+    Q_INVOKABLE QString successMsg() const override;
     Q_INVOKABLE bool authenticated() const;
     Q_INVOKABLE QVariantMap getUser() const;
     Q_INVOKABLE bool registerUser(const QVariantMap &payload);
