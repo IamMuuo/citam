@@ -45,7 +45,8 @@ Kirigami.ScrollablePage {
             img: "pupils.png"
             description: "Easily manage student's information"
             todo: function(){
-                addStudentForm.open()
+                pageStack.pop();
+                pageStack.push(Qt.resolvedUrl("StudentManagementPage.qml"))
             }
 
         }

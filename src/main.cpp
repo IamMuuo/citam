@@ -20,6 +20,7 @@
 
 #include "controllers/classcontroller.h"
 #include "controllers/logincontroller.h"
+#include "controllers/studentcontroller.h"
 
 #include "citamconfig.h"
 
@@ -96,6 +97,9 @@ int main(int argc, char *argv[])
 
     ClassController classController;
     qmlRegisterSingletonInstance<ClassController>("org.kde.citam", 1, 0, "ClassController", &classController);
+
+    StudentController studentController;
+    qmlRegisterSingletonInstance<StudentController>("org.kde.citam", 1, 0, "StudentController", &studentController);
 
     engine.rootContext()->setContextObject(new KLocalizedContext(&engine));
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));

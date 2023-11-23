@@ -9,6 +9,7 @@
         <file alias="ClassManagementPage.qml">contents/ui/ClassManagementPage.qml</file>
         <file alias="ClassEditForm.qml">contents/ui/ClassEditForm.qml</file>
         <file alias="TeacherManagementPage.qml">contents/ui/TeacherManagementPage.qml</file>
+        <file alias="StudentManagementPage.qml">contents/ui/StudentManagementPage.qml</file>
         <file alias="teacher.png">contents/ui/img/teacher.png</file>
         <file alias="class.png">contents/ui/img/class.png</file>
         <file alias="pupils.png">contents/ui/img/pupils.png</file>
