@@ -119,3 +119,22 @@ void LoginController::deleteUser(const QVariantMap &payload)
     mUserService.deleteUser(payload);
     loop.exec();
 }
+
+void LoginController::updateUser(const QVariantMap &payload)
+{
+    QEventLoop loop;
+
+    connect(&mUserService, &UserService::success, &loop, &QEventLoop::quit);
+    connect(&mUserService, &UserService::serviceError, &loop, &QEventLoop::quit);
+    connect(&mUserService, &UserService::serviceError, [this]() {
+        this->setError(mUserService.error());
+    });
+
+    connect(&mUserService, &UserService::success, [this]() {
+        this->setSuccess(QString::fromLatin1("User updated successfully"));
+        Q_EMIT userModified();
+    });
+
+    mUserService.updateUser(payload);
+    loop.exec();
+}

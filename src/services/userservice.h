@@ -18,6 +18,7 @@ public:
     QVariantList getAllUsers();
     void registerUser(const QByteArray &user);
     void deleteUser(const QVariantMap &user);
+    void updateUser(const QVariantMap &user);
     Q_SIGNAL void success();
 };
 

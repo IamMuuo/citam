@@ -190,6 +190,9 @@ Kirigami.OverlaySheet {
                     visible: mode == "update" ? true : false
                     icon.name: "im-invisible-user"
                     text: "Update User"
+                    onClicked: {
+                        updateUser()
+                    }
                 }
                 Controls.Button {
                     visible: mode == "update" ? true : false
@@ -232,11 +235,30 @@ Kirigami.OverlaySheet {
         confirmPassord.text = ""
     }
 
-    function deleteUser(){
-       var payload = {
+    function deleteUser() {
+        var payload = {
             "id": details.id
         }
         LoginController.deleteUser(payload)
+    }
+
+    function updateUser() {
+        if (confirmPassord.text != passwordField.text) {
+            message.text = "Passwords do not match"
+            message.type = Kirigami.MessageType.Error
+            message.visible = true
+            return false
+        }
+        let payload = {
+            "id": details.id,
+            "first_name": firstNameField.text.trim(),
+            "last_name": lastNameField.text.trim(),
+            "email": emailField.text.trim(),
+            "phone": phoneField.text.trim(),
+            "user_type": user
+        }
+
+        LoginController.updateUser(payload)
     }
 
     function validatePasswords() {
