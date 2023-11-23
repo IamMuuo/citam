@@ -25,7 +25,6 @@ Kirigami.ScrollablePage {
     AddUserForm{
         id: addUserForm
     }
-
     AddStudentForm{
         id: addStudentForm
     }
@@ -56,7 +55,8 @@ Kirigami.ScrollablePage {
             img: "teacher.png"
             description: "Easily manage teacher information"
             todo: function(){
-                addUserForm.open()
+                pageStack.pop();
+                pageStack.push(Qt.resolvedUrl("TeacherManagementPage.qml"))
             }
 
         }

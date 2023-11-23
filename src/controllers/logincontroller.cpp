@@ -100,3 +100,22 @@ QVariantList LoginController::getAllUsers() const
 {
     return users;
 }
+
+void LoginController::deleteUser(const QVariantMap &payload)
+{
+    QEventLoop loop;
+
+    connect(&mUserService, &UserService::success, &loop, &QEventLoop::quit);
+    connect(&mUserService, &UserService::serviceError, &loop, &QEventLoop::quit);
+    connect(&mUserService, &UserService::serviceError, [this]() {
+        this->setError(mUserService.error());
+    });
+
+    connect(&mUserService, &UserService::success, [this]() {
+        this->setSuccess(QString::fromLatin1("User deleted successfully"));
+        Q_EMIT userModified();
+    });
+
+    mUserService.deleteUser(payload);
+    loop.exec();
+}

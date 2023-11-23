@@ -7,22 +7,24 @@ import org.kde.kirigami 2.19 as Kirigami
 import org.kde.citam 1.0
 
 Kirigami.OverlaySheet {
+    id: root
 
     // Properties
     property string mode: "create"
-    property int user:2
+    property int user: 2
+    property var details: ({})
 
     header: Kirigami.Heading {
         text: mode == "create" ? i18nc("@title:window",
-                                       "Add New " + user) : i18nc(
-                                     "@title:window", "Update " + user)
+                                       "Add New User") : i18nc("@title:window",
+                                                               "Update User")
     }
     // Form
     Kirigami.FormLayout {
         Connections {
             target: LoginController
             onUserModified: {
-                message.text = "User was added successfully"
+                message.text = LoginController.successMsg()
                 message.type = Kirigami.MessageType.Positive
                 message.visible = true
             }
@@ -46,11 +48,6 @@ Kirigami.OverlaySheet {
                 type: Kirigami.MessageType.Information
                 showCloseButton: true
             }
-
-            Kirigami.Avatar {
-                iconSource: "im-user"
-            }
-
             Kirigami.Heading {
                 text: i18n("Basic Information")
                 level: 1
@@ -66,7 +63,6 @@ Kirigami.OverlaySheet {
 
                 Controls.TextField {
                     id: firstNameField
-                    // Provides label attached to the textfield
                     Kirigami.FormData.label: i18nc("@label:textbox",
                                                    "First Name:")
                     // Placeholder text is visible before you enter anything
@@ -74,6 +70,7 @@ Kirigami.OverlaySheet {
                     // What to do after input is accepted (i.e. pressed enter)
                     // In this case, it moves the focus to the next field
                     onAccepted: lastNameField.activeFocus()
+                    text: details.first_name === undefined ? "" : details.first_name
                 }
 
                 Controls.TextField {
@@ -86,6 +83,7 @@ Kirigami.OverlaySheet {
                     // What to do after input is accepted (i.e. pressed enter)
                     // In this case, it moves the focus to the next field
                     onAccepted: emailField.forceActiveFocus()
+                    text: details.last_name === undefined ? "" : details.last_name
                 }
             }
 
@@ -111,6 +109,7 @@ Kirigami.OverlaySheet {
                     // What to do after input is accepted (i.e. pressed enter)
                     // In this case, it moves the focus to the next field
                     onAccepted: phoneField.activeFocus()
+                    text: details.email === undefined ? "" : details.email
                 }
 
                 Controls.TextField {
@@ -122,6 +121,7 @@ Kirigami.OverlaySheet {
                     // What to do after input is accepted (i.e. pressed enter)
                     // In this case, it moves the focus to the next field
                     onAccepted: passwordField.forceActiveFocus()
+                    text: details.phone === undefined ? "" : details.phone
                 }
             }
 
@@ -187,21 +187,22 @@ Kirigami.OverlaySheet {
                     onClicked: addUser()
                 }
                 Controls.Button {
-
                     visible: mode == "update" ? true : false
-                    icon.source: "im-invisible-user"
+                    icon.name: "im-invisible-user"
                     text: "Update User"
                 }
                 Controls.Button {
-
                     visible: mode == "update" ? true : false
-                    icon.source: "im-kick-user"
+                    icon.name: "im-kick-user"
                     text: "Delete User"
+                    onClicked: deleteUser()
                 }
                 Controls.Button {
-
-                    icon.source: "dialog-cancel"
+                    icon.name: "dialog-cancel"
                     text: "Cancel"
+                    onClicked: function () {
+                        root.close()
+                    }
                 }
             }
         }
@@ -218,7 +219,24 @@ Kirigami.OverlaySheet {
                 "user_type": user
             }
             LoginController.registerUser(payload)
+            clearFields()
         }
+    }
+
+    function clearFields() {
+        firstNameField.text = ""
+        lastNameField.text = ""
+        emailField.text = ""
+        phoneField.text = ""
+        passwordField.text = ""
+        confirmPassord.text = ""
+    }
+
+    function deleteUser(){
+       var payload = {
+            "id": details.id
+        }
+        LoginController.deleteUser(payload)
     }
 
     function validatePasswords() {

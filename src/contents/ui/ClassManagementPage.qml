@@ -80,7 +80,6 @@ Kirigami.ScrollablePage {
         id: model
     }
     ColumnLayout {
-
         Kirigami.CardsLayout {
             Repeater {
                 model: model

@@ -17,6 +17,7 @@ public:
     User authenticate(const QString &email, const QString &passord);
     QVariantList getAllUsers();
     void registerUser(const QByteArray &user);
+    void deleteUser(const QVariantMap &user);
     Q_SIGNAL void success();
 };
 

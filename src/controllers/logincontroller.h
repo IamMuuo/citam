@@ -23,6 +23,7 @@ public:
     Q_INVOKABLE bool registerUser(const QVariantMap &payload);
     Q_INVOKABLE void fetchAllUsers();
     Q_INVOKABLE QVariantList getAllUsers() const;
+    Q_INVOKABLE void deleteUser(const QVariantMap &payload);
 
     // Signals
     Q_SIGNAL void loginStateChanged();
