@@ -9,11 +9,17 @@
         <file alias="ClassManagementPage.qml">contents/ui/ClassManagementPage.qml</file>
         <file alias="ClassEditForm.qml">contents/ui/ClassEditForm.qml</file>
         <file alias="TeacherManagementPage.qml">contents/ui/TeacherManagementPage.qml</file>
+        <file alias="StudentViewPage.qml">contents/ui/StudentViewPage.qml</file>
         <file alias="StudentManagementPage.qml">contents/ui/StudentManagementPage.qml</file>
         <file alias="teacher.png">contents/ui/img/teacher.png</file>
         <file alias="class.png">contents/ui/img/class.png</file>
         <file alias="pupils.png">contents/ui/img/pupils.png</file>
         <file alias="residence.png">contents/ui/img/residence.png</file>
         <file alias="trips.png">contents/ui/img/trips.png</file>
+        <file alias="search.png">contents/ui/img/search.png</file>
+        <file alias="students.png">contents/ui/img/students.png</file>
+        <file alias="update.png">contents/ui/img/update.png</file>
+        <file alias="view.png">contents/ui/img/view.png</file>
+        <file alias="StudentForm.qml">contents/ui/StudentForm.qml</file>
     </qresource>
 </RCC>

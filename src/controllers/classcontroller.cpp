@@ -6,9 +6,13 @@ ClassController::ClassController(QObject *parent)
 {
 }
 
+void ClassController::handleFetchedClasses(const QVariantList &classes)
+{
+    Q_EMIT classesFetched(classes);
+}
+
 void ClassController::fetchClassInformation()
 {
-    mClasses.clear();
     QEventLoop loop;
 
     connect(&mService, &ClassService::success, &loop, &QEventLoop::quit);
@@ -17,18 +21,10 @@ void ClassController::fetchClassInformation()
         this->setError(mService.error());
     });
 
-    for (const auto &x : mService.getAllClasses()) {
-        mClasses.append(QVariant::fromValue(x));
-    }
+    connect(&mService, &ClassService::classesFetched, this, &ClassController::handleFetchedClasses);
 
+    mService.getAllClasses();
     loop.exec();
-
-    if (!mClasses.empty()) {
-        Q_EMIT classesRecieved();
-    } else {
-        setError(QString::fromLatin1("No classes found"));
-        Q_EMIT newError();
-    }
 }
 QVariantList ClassController::classes() const
 {

@@ -12,8 +12,7 @@ Kirigami.ScrollablePage {
 
     Component.onCompleted: {
         LoginController.fetchAllUsers()
-        ClassController.fetchClassInformation()
-        refreshPage()
+        ClassController.fetchClassInformation();
     }
 
     ClassEditForm {
@@ -52,7 +51,7 @@ Kirigami.ScrollablePage {
                 text: i18n("Refresh")
                 icon.name: "view-refresh"
                 onClicked: function () {
-                    refreshPage()
+                    ClassController.fetchClassInformation()
                 }
             }
         }
@@ -60,7 +59,23 @@ Kirigami.ScrollablePage {
 
     Connections {
         target: ClassController
-        onClassesRecieved: function () {}
+        onClassesFetched: {
+            console.log(classes)
+            model.clear()
+
+            for (var cls in classes) {
+                model.append({
+                                 "id": classes[cls].id,
+                                 "grade": classes[cls].grade,
+                                 "stream": classes[cls].stream,
+                                 "limit": classes[cls].limit,
+                                 "no_of_children": classes[cls].children.length,
+                                 "children": classes[cls].children,
+                                 "class_teacher_name": classes[cls].class_teacher.first_name,
+                                 "class_teacher": classes[cls].class_teacher
+                             })
+            }
+        }
         onSuccess: function () {
             message.text = LoginController.successMsg()
             message.type = Kirigami.MessageType.Positive
@@ -121,34 +136,4 @@ Kirigami.ScrollablePage {
         }
     }
 
-    function refreshPage() {
-        // call the api
-        model.clear()
-        ClassController.fetchClassInformation()
-        LoginController.fetchAllUsers()
-        var teachers = LoginController.getAllUsers()
-
-        for (var teacher in teachers) {
-            console.log(teachers[teacher].first_name)
-            editForm.teachers.append({
-                                         "text": `${teachers[teacher].id} ${teachers[teacher].first_name} ${teachers[teacher].last_name}`
-                                     })
-        }
-
-        // Refresh the ui
-        var classes = ClassController.classes()
-        for (var cls in classes) {
-
-            model.append({
-                             "id": classes[cls].id,
-                             "grade": classes[cls].grade,
-                             "stream": classes[cls].stream,
-                             "limit": classes[cls].limit,
-                             "no_of_children": classes[cls].children.length,
-                             "children": classes[cls].children,
-                             "class_teacher_name": classes[cls].class_teacher.first_name,
-                             "class_teacher": classes[cls].class_teacher
-                         })
-        }
-    }
 }

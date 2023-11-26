@@ -9,7 +9,7 @@ ClassService::ClassService(QObject *parent)
 {
 }
 
-QVariantList ClassService::getAllClasses()
+void ClassService::getAllClasses()
 {
     this->url->setPath(QString::fromLatin1("/class/all"));
     qDebug() << "Url " << url->toString();
@@ -21,6 +21,8 @@ QVariantList ClassService::getAllClasses()
     connect(reply, &QNetworkReply::finished, [this, reply]() {
         auto response = reply->readAll();
 
+        QVariantList classes;
+
         QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
         switch (reply->error()) {
         case QNetworkReply::NoError:
@@ -30,6 +32,7 @@ QVariantList ClassService::getAllClasses()
                 for (auto obj : jsArr) {
                     classes.append(obj.toVariant().toMap());
                 }
+                Q_EMIT classesFetched(classes);
                 Q_EMIT success();
             } else {
                 setError(QString::fromLatin1("Could not parse classes information"));
@@ -59,8 +62,6 @@ QVariantList ClassService::getAllClasses()
             break;
         }
     });
-
-    return classes;
 }
 
 void ClassService::updateClass(const QVariantMap &cls)

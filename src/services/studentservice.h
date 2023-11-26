@@ -10,9 +10,11 @@ class StudentService : public Service
 public:
     explicit StudentService(QObject *parent = nullptr);
     void fetchStudents();
+    void fetchParents();
 
     Q_SIGNAL void success();
     Q_SIGNAL void studentsFetched(QVariantList students);
+    Q_SIGNAL void parentsFetched(QVariantList parents);
 };
 
 #endif // STUDENTSERVICE_H

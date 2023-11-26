@@ -3,19 +3,12 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15 as Controls
 import QtQuick.Layouts 1.15
-import Qt.labs.qmlmodels 1.0
-import QtQuick.Controls 1.4
 import org.kde.kirigami 2.19 as Kirigami
 import org.kde.citam 1.0
 
 Kirigami.ScrollablePage {
     id: root
-    title: i18n("Student Management Page")
-
-    Component.onCompleted: {
-        refreshPage()
-    }
-
+    title: i18n("Manage Pupils")
     header: Controls.ToolBar {
         RowLayout {
             Controls.Button {
@@ -26,88 +19,66 @@ Kirigami.ScrollablePage {
                     pageStack.push(Qt.resolvedUrl("Home.qml"))
                 }
             }
+        }
+    }
 
-            Controls.Button {
-                text: i18n("New Student")
-                icon.name: "list-add-user"
-                onClicked: {
+    ListModel {
+        id: model
+        ListElement {
+            head: "Add Student"
+            description: "Adds a Student to the system"
+            picture: "pupils.png"
+            onclicked: function () {
+                pageStack.pop();
+                pageStack.push(Qt.resolvedUrl("StudentForm.qml"));
+            }
+        }
+        ListElement {
+            head: "Modify Student"
+            description: "Updates a student information"
+            picture: "update.png"
+        }
 
-                    //                    editForm.details = {}
-                    //                    editForm.open()
+        ListElement {
+            head: "Search For Student"
+            description: "Updates a student information"
+            picture: "search.png"
+        }
+
+        ListElement {
+            head: "View All Students"
+            description: "Lists all students per given criteria"
+            picture: "view.png"
+            onclicked: function () {
+                pageStack.pop()
+                pageStack.push(Qt.resolvedUrl("StudentViewPage.qml"))
+            }
+        }
+    }
+
+    ColumnLayout {
+        Kirigami.CardsLayout {
+            Repeater {
+                model: model
+                delegate: Kirigami.Card {
+                    id: card
+                    banner {
+                        source: Qt.resolvedUrl(picture)
+                        title: `${head}`
+                        height: 80
+                        clip: true
+                    }
+
+                    height: 200
+                    showClickFeedback: true
+                    contentItem: Kirigami.Label {
+                        width: parent.width
+                        text: `${description}`
+                        wrapMode: Text.WordWrap
+                    }
+                    onClicked: onclicked()
                 }
             }
-            Controls.Button {
-                text: i18n("Refresh")
-                icon.name: "view-refresh"
-                onClicked: function () {
-                    refreshPage()
-                }
-            }
         }
-    }
-
-    Connections {
-        target: StudentController
-        onStudentsFetched: {
-            tableModel.clear()
-            console.log(students)
-            for (var student in students) {
-                tableModel.append({
-                                      "firstname": `${students[student].first_name}`,
-                                      "lastname": `${students[student].last_name}`,
-                                      "admno": `${students[student].admno}`,
-                                      "age": `${students[student].age}`,
-                                      "class": `${students[student]["class"].grade}`,
-                                      "stream": `${students[student]["class"].stream}`,
-                                      "teacher": `${students[student]["class"]["class_teacher"].first_name} ${students[student]["class"]["class_teacher"].last_name}`
-                                  })
-            }
-        }
-    }
-
-    // Body
-    TableView {
-        anchors.fill: parent
-        clip: true
-
-        TableViewColumn {
-            role: "firstname"
-            title: "First Name"
-        }
-
-        TableViewColumn {
-            role: "lastname"
-            title: "Last Name"
-        }
-
-        TableViewColumn {
-            role: "admno"
-            title: "Admission Number"
-        }
-
-        TableViewColumn {
-            role: "age"
-            title: "Age"
-        }
-        TableViewColumn {
-            role: "class"
-            title: "Class"
-        }
-        TableViewColumn {
-            role: "stream"
-            title: "Stream"
-        }
-        TableViewColumn {
-            role: "teacher"
-            title: "Teacher"
-        }
-
-        model: ListModel {
-            id: tableModel
-        }
-    }
-
-    function refreshPage() {
-        StudentController.fetchAllStudents()
     }
 }

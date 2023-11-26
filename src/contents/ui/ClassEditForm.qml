@@ -99,9 +99,9 @@ Kirigami.OverlaySheet {
                 displayText: i18n(currentText)
                 width: parent.width
                 editable: false
-                onCurrentIndexChanged: {
-                    streamInput.currentText = streamInput.model[streamInput.currentIndex]
-                }
+//                onCurrentIndexChanged: {
+//                    streamInput.currentText = streamInput.model[streamInput.currentIndex]
+//                }
                 editText: details.class_teacher_name
             }
 
