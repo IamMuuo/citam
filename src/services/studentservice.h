@@ -12,6 +12,8 @@ public:
     void fetchStudents();
     void fetchParents();
 
+    void registerStudent(const QVariantMap &student);
+
     Q_SIGNAL void success();
     Q_SIGNAL void studentsFetched(QVariantList students);
     Q_SIGNAL void parentsFetched(QVariantList parents);

@@ -26,6 +26,8 @@ public:
     Q_INVOKABLE void fetchAllStudents();
     Q_INVOKABLE void fetchAllParents();
 
+    Q_INVOKABLE void registerStudent(const QVariantMap &student);
+
     // Signals
     Q_SIGNAL void studentsFetched(QVariantList students);
     Q_SIGNAL void parentsFetched(QVariantList parents);

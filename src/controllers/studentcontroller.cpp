@@ -57,3 +57,22 @@ void StudentController::fetchAllParents()
 
     loop.exec();
 }
+
+void StudentController::registerStudent(const QVariantMap &student)
+{
+    QEventLoop loop;
+
+    connect(&mStudentService, &StudentService::success, &loop, &QEventLoop::quit);
+    connect(&mStudentService, &StudentService::serviceError, &loop, &QEventLoop::quit);
+    connect(&mStudentService, &StudentService::serviceError, [this]() {
+        this->setError(mStudentService.error());
+    });
+    connect(&mStudentService, &StudentService::success, [this]() {
+        this->mSuccessMsg = QString::fromLatin1("Successfully registered student");
+        Q_EMIT success();
+    });
+
+    mStudentService.registerStudent(student);
+
+    loop.exec();
+}

@@ -30,7 +30,6 @@ Kirigami.ScrollablePage {
             }
         }
     }
-
     Kirigami.FormLayout {
 
         Connections {
@@ -51,6 +50,18 @@ Kirigami.ScrollablePage {
                                             "phone": parents[p].phone
                                         })
                 }
+            }
+
+            onNewError: {
+                message.text = StudentController.error()
+                message.type = Kirigami.MessageType.Error
+                message.visible = true
+            }
+
+            onSuccess:{
+                message.text = StudentController.successMsg()
+                message.type = Kirigami.MessageType.Positive
+                message.visible = true
             }
         }
 
@@ -131,6 +142,7 @@ Kirigami.ScrollablePage {
             }
 
             Controls.ComboBox {
+                id: parentInfo
                 Layout.fillWidth: true
                 textRole: "name"
                 valueRole: "id"
@@ -187,6 +199,7 @@ Kirigami.ScrollablePage {
                 level: 1
             }
             Controls.ComboBox {
+                id: classSelection
                 Layout.fillWidth: true
                 textRole: "class"
                 valueRole: "id"
@@ -200,20 +213,23 @@ Kirigami.ScrollablePage {
                 }
             }
             Controls.ComboBox {
+                id: studentType
                 Layout.fillWidth: true
                 textRole: "name"
                 valueRole: "type"
-                model: [
-                    {"type": 1, "name": "Regular"},
-                    {"type":2,"name":"Programme"},
-                ]
+                model: [{
+                        "type": 1,
+                        "name": "Regular"
+                    }, {
+                        "type": 2,
+                        "name": "Programme"
+                    }]
 
                 displayText: currentIndex === -1 ? "Choose type" : currentText
                 onCurrentIndexChanged: {
 
                 }
             }
-
 
             Kirigami.Heading {
                 text: i18n("Actions")
@@ -229,31 +245,67 @@ Kirigami.ScrollablePage {
                 Controls.Button {
                     visible: mode == "create" ? true : false
                     icon.source: "list-add-user"
-                    text: "Add User"
-                    onClicked: addUser()
+                    text: "Register Student"
+                    onClicked: {
+                        if(verifyInputs()){
+                            registerStudent()
+                        }
+                    }
                 }
                 Controls.Button {
                     visible: mode == "update" ? true : false
                     icon.name: "im-invisible-user"
-                    text: "Update User"
+                    text: "Update Student"
                     onClicked: {
-                        updateUser()
                     }
                 }
                 Controls.Button {
                     visible: mode == "update" ? true : false
                     icon.name: "im-kick-user"
                     text: "Delete User"
-                    onClicked: deleteUser()
+                    onClicked: {}
                 }
                 Controls.Button {
                     icon.name: "dialog-cancel"
                     text: "Cancel"
                     onClicked: function () {
-                        root.close()
+                        pageStack.pop()
+                        pageStack.push(Qt.resolvedUrl("StudentManagementPage.qml"))
                     }
                 }
             }
         }
+    }
+
+    function registerStudent() {
+        var payload = {
+            "first_name": firstNameField.text,
+            "last_name": lastNameField.text,
+            "age": Number(ageInput.text),
+            "parent_id": parentInfo.currentValue
+                         === undefined ? undefined : parentInfo.currentValue,
+            "parent": {
+                "fisrt_name": parentFirstNameField.text,
+                "last_name": parentLastNameField.text,
+                "email": emailField.text,
+                "phone": phoneField.text
+            },
+            "child_type_id": studentType.currentValue,
+            "class_id": classSelection.currentValue
+        }
+        StudentController.registerStudent(payload)
+    }
+
+    function verifyInputs() {
+        if (firstNameField.text == "" || lastNameField.text == ""
+                || ageInput.text == "" || studentType.currentIndex == -1
+                || classSelection.currentIndex == -1) {
+            message.text = "Please ensure you fill the details"
+            message.type = Kirigami.MessageType.Warning
+            message.visible = true
+
+            return false
+        }
+        return true
     }
 }
